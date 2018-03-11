@@ -9,12 +9,14 @@ import cards from '../cards.json';
 const Trainer = function trainerComponent(props) {
   return (
     <div className="trainer">
-      <div className="trainer__conversation">
-        <ol>
-          {props.cards.map(card => (
-            <li key={card.uuid} className="speech-bubble"><span>{card.answer.content}</span></li>
-          ))}
-        </ol>
+      <div className="trainer__conversation-parent">
+        <div className="trainer__conversation">
+          <ol>
+            {props.cards.map(card => (
+              <li key={card.uuid} className="speech-bubble"><span>{card.answer.content}</span></li>
+            ))}
+          </ol>
+        </div>
       </div>
       <div className="trainer__action-bar">
         <input type="text" placeholder="your answer" />
