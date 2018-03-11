@@ -59,6 +59,9 @@ header {
   justify-items: center;
   align-items: center;
 }
+/* using https://leaverou.github.io/bubbly/ */
+.speech-bubble { position: relative; background: transparentize($color: #606c76, $amount: 0.7); border-radius: .4em; } .speech-bubble:after { content: ''; position: absolute; left: 0; top: 50%; width: 0; height: 0; border: 7px solid transparent; border-right-color: transparentize($color: #606c76, $amount: 0.7); border-left: 0; border-bottom: 0; margin-top: -3.5px; margin-left: -7px; }
+
 .trainer {
   width: 350px;
   height: calc(100% - 10px);
@@ -69,7 +72,20 @@ header {
   grid-template-rows: auto fit-content(0);
 
   &__conversation {
-
+    overflow-y: scroll;
+    ol {
+      padding: 10px;
+      list-style: none;
+      li {
+        display: inline-block;
+        float: left;
+        clear: both;
+      }
+      span {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    }
   }
 
   &__action-bar {
