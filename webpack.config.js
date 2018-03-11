@@ -13,7 +13,8 @@ module.exports = {
   },
   devServer: {
     publicPath: '/public/',
-    historyApiFallback: true
+    historyApiFallback: true,
+    disableHostCheck: true
   },
   stats: {
     colors: true,
