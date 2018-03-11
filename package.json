@@ -1,10 +1,10 @@
 {
   "scripts": {
-    "api": "node ratingsAPI.js",
     "build": "webpack",
     "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 \"js/**/*.{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "dev": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "dependencies": {
     "axios": "0.16.1",
@@ -60,13 +60,13 @@
     "prettier": "1.3.1",
     "react-hot-loader": "3.0.0-beta.6",
     "react-test-renderer": "15.5.4",
-    "webpack-dev-server": "2.4.5"
+    "webpack-dev-server": "^2.4.5"
   },
-  "name": "complete-intro-to-react",
-  "version": "3.0.0",
-  "description": "A Complete Intro to React workshop",
+  "name": "recallq-client",
+  "version": "1.0.0",
+  "description": "The client side code for the recallq app",
   "main": "server.js",
-  "repository": "git@github.com:btholt/complete-intro-to-react.git",
-  "author": "Brian Holt <btholt@gmail.com>",
+  "repository": "git@github.com:jeroendeswaef/recallq-client.git",
+  "author": "Jeroen De Swaef <j@recallq.com>",
   "license": "MIT"
 }
