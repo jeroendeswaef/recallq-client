@@ -98,7 +98,7 @@ header {
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
+    bottom: 0;
     max-height: 100%;
     /** end bugfix **/
     ol {
@@ -108,6 +108,7 @@ header {
        display: inline-block;
         float: left;
         clear: both;
+        padding: 5px 10px;
       }
       span {
         margin-left: 5px;
