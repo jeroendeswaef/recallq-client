@@ -1,13 +1,8 @@
-import uuid from 'uuid/v3';
+import MessageBase from './MessageBase';
 
-const MY_NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341';
-
-class SystemMessage {
+class SystemMessage extends MessageBase {
   constructor(text) {
-    this.timeStamp = new Date();
-    this.uuid = uuid(`${text}-${this.timeStamp}`, MY_NAMESPACE);
-    this.text = text;
-    this.origin = 'system';
+    super(text, 'system');
   }
 }
 
