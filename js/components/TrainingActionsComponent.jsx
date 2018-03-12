@@ -27,6 +27,7 @@ class TrainingActionsComponent extends React.PureComponent {
           onChange={this.changeEnteredAnswer}
           type="text"
           placeholder="your answer"
+          ref={input => input && input.focus()}
         />
         <button type="submit" className="button">Answer</button>
       </form>

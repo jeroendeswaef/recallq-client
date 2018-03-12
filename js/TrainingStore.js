@@ -17,6 +17,7 @@ class TrainingStore {
     this.cards = cards;
     this.currentCard = undefined;
     this.askNextQuestion();
+    this.wrongAudio = new Audio('/public/sound/wrong.mp3');
     // autorun(() => console.log(this.report));
   }
 
@@ -26,6 +27,7 @@ class TrainingStore {
   };
 
   showCorrectAnswer = () => {
+    this.wrongAudio.play();
     this.messages.push(new SystemMessage(this.currentCard.answer.content));
   };
 
