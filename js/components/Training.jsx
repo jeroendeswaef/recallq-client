@@ -12,9 +12,20 @@ import TrainingActionsComponent from './TrainingActionsComponent';
       store: props.store
     };
   }
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
   answer(msg) {
     this.state.store.answer(msg);
   }
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  };
+
   render() {
     return (
       <div className="trainer">
@@ -23,6 +34,12 @@ import TrainingActionsComponent from './TrainingActionsComponent';
             <ol>
               {this.props.store.messages.map(message => <MessageComponent key={message.uuid} {...message} />)}
             </ol>
+            <div
+              style={{ float: 'left', clear: 'both' }}
+              ref={el => {
+                this.messagesEnd = el;
+              }}
+            />
           </div>
         </div>
         <TrainingActionsComponent answer={this.answer} />
