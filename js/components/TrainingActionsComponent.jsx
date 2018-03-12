@@ -1,5 +1,5 @@
 import React from 'react';
-import MicroEvent from 'microevent';
+import { shape, func } from 'prop-types';
 
 class TrainingActionsComponent extends React.PureComponent {
   constructor(props) {
@@ -7,11 +7,12 @@ class TrainingActionsComponent extends React.PureComponent {
     this.handleClick = this.handleClick.bind(this);
     this.changeEnteredAnswer = this.changeEnteredAnswer.bind(this);
     this.state = {
-      enteredAnswer: ''
+      enteredAnswer: '',
+      answer: props.answer
     };
   }
   handleClick() {
-    this.trigger(this.state.enteredAnswer);
+    this.state.answer(this.state.enteredAnswer);
     this.setState({ enteredAnswer: '' });
   }
   changeEnteredAnswer(event) {
@@ -33,6 +34,8 @@ class TrainingActionsComponent extends React.PureComponent {
   }
 }
 
-MicroEvent.mixin(TrainingActionsComponent);
+TrainingActionsComponent.propTypes = shape({
+  answer: func.isRequired
+}).isRequired;
 
 export default TrainingActionsComponent;
