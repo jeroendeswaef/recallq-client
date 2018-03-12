@@ -21,7 +21,7 @@ import TrainingActionsComponent from './TrainingActionsComponent';
         <div className="trainer__conversation-parent">
           <div className="trainer__conversation">
             <ol>
-              {this.props.store.messages.map(message => <MessageComponent key={message.uuid} message={message} />)}
+              {this.props.store.messages.map(message => <MessageComponent key={message.uuid} {...message} />)}
             </ol>
           </div>
         </div>

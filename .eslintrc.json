@@ -12,8 +12,8 @@
 		"ecmaVersion": 2016,
 		"sourceType": "module",
 		"ecmaFeatures": {
-			"jsx": true
-		/*	"experimentalDecorators": true */
+			"jsx": true,
+			"experimentalDecorators": true
 		}
 	},
 	"env": {

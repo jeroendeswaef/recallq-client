@@ -2,7 +2,9 @@ import React from 'react';
 import { shape, string, oneOf } from 'prop-types';
 
 const MessageComponent = props => (
-  <li key={props.message.uuid} className="speech-bubble"><span>{props.message.text}</span></li>
+  <li key={props.uuid} className={`speech-bubble--${props.origin === 'system' ? 'system' : 'user'}`}>
+    <span>{props.text}</span>
+  </li>
 );
 
 MessageComponent.propTypes = shape({
