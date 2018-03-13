@@ -1,7 +1,9 @@
 import React from 'react';
 import { string, arrayOf, shape } from 'prop-types';
 import { observer } from 'mobx-react';
-import MessageComponent from './Message';
+import AnswerMessage from '../model/AnswerMessage';
+import SystemMessageComponent from './SystemMessage';
+import AnswerMessageComponent from './AnswerMessage';
 import TrainingActionsComponent from './TrainingActionsComponent';
 
 @observer class TrainingComponent extends React.PureComponent {
@@ -32,7 +34,12 @@ import TrainingActionsComponent from './TrainingActionsComponent';
         <div className="trainer__conversation-parent">
           <div className="trainer__conversation">
             <ol>
-              {this.props.store.messages.map(message => <MessageComponent key={message.uuid} {...message} />)}
+              {this.props.store.messages.map(
+                message =>
+                  message instanceof AnswerMessage
+                    ? <AnswerMessageComponent key={message.uuid} {...message} />
+                    : <SystemMessageComponent key={message.uuid} {...message} />
+              )}
             </ol>
             <div
               style={{ float: 'left', clear: 'both' }}

@@ -1,18 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
-
-/*@mixin x-appearance ($value) {
-	-webkit-appearance: $value;
-	   -moz-appearance: $value;
-	        appearance: $value;
-}*/
-
 html,
 body {
   height: 100%;
 }
 
 body {
-  margin: 0; //font-family: 'Montserrat', sans-serif;
+  margin: 0;
   display: grid;
   grid-template-rows: fit-content(0) auto;
 }
@@ -22,20 +15,6 @@ input {
   outline: none;
   border: none;
 }
-
-
-/*input { @include x-appearance(none); box-shadow: none !important; }*/
-
-
-/*button, input[type="submit"], input[type="reset"] {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-}*/
 
 header {
   background-color: black;
@@ -195,6 +174,13 @@ $amount: 0.8);
       span {
         margin-left: 5px;
         margin-right: 5px;
+      }
+    }
+    &__message {
+      &.incorrect {
+        .proposed-answer {
+          text-decoration: line-through;
+        }
       }
     }
   }

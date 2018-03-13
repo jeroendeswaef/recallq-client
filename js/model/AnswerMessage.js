@@ -11,6 +11,7 @@ class AnswerMessage extends MessageBase {
     super(text, 'answer');
     this.card = card;
     this.isValid = card.validateAnswer(text).isValid;
+    this.correctedText = card.answerText;
   }
 }
 

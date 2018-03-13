@@ -32,6 +32,11 @@ export default (function cardSetup() {
       return privateData ? privateData.data.question.content : '';
     }
 
+    get answerText(): string {
+      const privateData = privateProps.get(this);
+      return privateData ? privateData.data.answer.content : '';
+    }
+
     validateAnswer(answer: string): { isValid: boolean } {
       const privateData = privateProps.get(this);
       if (!privateData) throw new Error('No private data found');
