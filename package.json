@@ -4,6 +4,7 @@
     "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 \"js/**/*.{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
     "watch": "webpack --watch",
+    "flow": "node_modules/flow-bin/cli.js",
     "dev": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "dependencies": {
