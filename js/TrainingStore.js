@@ -1,6 +1,12 @@
+// @flow
+
 import { observable, computed } from 'mobx';
+import { PropTypes } from 'mobx-react';
 import SystemMessage from './model/SystemMessage';
 import AnswerMessage from './model/AnswerMessage';
+import Card from './model/Card';
+import MessageBase from './model/MessageBase';
+// import { ObservableArray } from 'mobx/lib/types/observablearray';
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
@@ -10,12 +16,15 @@ function getRandomArbitrary(min, max) {
 }
 
 class TrainingStore {
-  @observable messages;
+  @observable messages: PropTypes.observable<MessageBase>;
+  cards: Array<Card>;
+  currentCard: ?Card;
+  wrongAudio: Audio;
 
-  constructor(initialMessages, cards) {
+  constructor(initialMessages: string[], cards: Array<Card>) {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
     this.cards = cards;
-    this.currentCard = undefined;
+    this.currentCard = null;
     this.askNextQuestion();
     this.wrongAudio = new Audio('/public/sound/wrong.mp3');
     // autorun(() => console.log(this.report));
@@ -23,20 +32,20 @@ class TrainingStore {
 
   askNextQuestion = () => {
     this.currentCard = this.cards[getRandomArbitrary(0, this.cards.length)];
-    this.messages.push(new SystemMessage(this.currentCard.question.content));
+    this.messages.push(new SystemMessage(`"${this.currentCard.questionText}"`));
   };
 
   showCorrectAnswer = () => {
     this.wrongAudio.play();
-    this.messages.push(new SystemMessage(this.currentCard.answer.content));
+    // this.messages.push(new SystemMessage(this.currentCard.answer.content));
   };
 
-  @computed get report() {
+  @computed get report(): string {
     if (this.messages.length === 0) return '<none>';
     return `${this.messages.length} messages`;
   }
 
-  answer(msg) {
+  answer(msg: string) {
     this.messages.push(new AnswerMessage(msg));
     this.showCorrectAnswer();
     this.askNextQuestion();
