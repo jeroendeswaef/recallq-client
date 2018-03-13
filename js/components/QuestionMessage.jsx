@@ -1,13 +1,14 @@
 // @flow
 
 import React from 'react';
-import Card from '../model/Card';
+import shortid from 'shortid';
 
-export default (props: { uuid: string, card: Card }) => 
-  // console.info(props.card.questionItemsWithArticle);
-   (
-    <li key={props.uuid} className="trainer__conversation__message speech-bubble--system">
-      {/* props.card.questionItemsWithArticle.map(str => <div key={uuidv3(str, props.card.uuid)}>{str}</div>) */}
-      {props.card.questionItemsWithArticle[0]}
-    </li>
-  );
+const QuestionMessage = (props: { questionItems: Array<string> }) => (
+  <li className="trainer__conversation__message speech-bubble--system">
+    {props.questionItems.map((str: string) => (
+      <span key={shortid.generate()} className="question-item"><q>{str}</q></span>
+    ))}
+  </li>
+);
+
+export default QuestionMessage;

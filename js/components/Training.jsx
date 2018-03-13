@@ -14,7 +14,6 @@ import QuestionMessage from '../model/QuestionMessage';
 @observer class TrainingComponent extends React.PureComponent {
   static renderMessage(message: MessageBase) {
     if (message instanceof AnswerMessage) {
-      console.info(message.uuid, message.text);
       return (
         <AnswerMessageComponent
           key={message.uuid}
@@ -25,7 +24,9 @@ import QuestionMessage from '../model/QuestionMessage';
       );
     } else if (message instanceof QuestionMessage) {
       const questionMessage: QuestionMessage = message;
-      return <QuestionMessageComponent key={message.uuid} card={questionMessage.card} />;
+      return (
+        <QuestionMessageComponent key={message.uuid} questionItems={questionMessage.card.questionItemsWithArticle} />
+      );
     }
     return <SystemMessageComponent key={message.uuid} {...message} />;
   }

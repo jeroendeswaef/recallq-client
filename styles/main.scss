@@ -177,6 +177,13 @@ $amount: 0.8);
       }
     }
     &__message {
+      q+q {
+        margin-left: 0.5em;
+      }
+      .question-item+.question-item:before {
+        content: '/';
+        margin-right: 0.5em;
+      }
       &.incorrect {
         .proposed-answer {
           text-decoration: line-through;

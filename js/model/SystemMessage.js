@@ -2,7 +2,8 @@ import MessageBase from './MessageBase';
 
 class SystemMessage extends MessageBase {
   constructor(text) {
-    super(text, 'system');
+    super('system');
+    this.text = text;
   }
 }
 

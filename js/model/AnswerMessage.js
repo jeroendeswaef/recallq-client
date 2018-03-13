@@ -8,7 +8,8 @@ class AnswerMessage extends MessageBase {
   isValid: boolean;
 
   constructor(text: string, card: Card) {
-    super(text, 'user');
+    super('user');
+    this.text = text;
     this.card = card;
     this.isValid = card.validateAnswer(text).isValid;
     this.correctedText = card.answerText;

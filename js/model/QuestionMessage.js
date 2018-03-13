@@ -7,7 +7,7 @@ class QuestionMessage extends MessageBase {
   card: Card;
 
   constructor(card: Card) {
-    super('', 'system');
+    super('system');
     this.card = card;
   }
 }
