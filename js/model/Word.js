@@ -24,7 +24,7 @@ export default class Word {
       let isSpaceBetween: boolean = true;
       if (this.gender === 'm') {
         article = 'un';
-      } else if (this.gender === 'v') {
+      } else if (this.gender === 'f') {
         article = isStartingWithVowel ? "un'" : 'une';
         isSpaceBetween = !isStartingWithVowel;
       } else {

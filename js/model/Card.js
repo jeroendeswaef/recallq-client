@@ -4,14 +4,14 @@ import Word from './Word';
 
 export default class Card {
   questionItems: Array<Word>;
+  answer: Word;
   uuid: string;
-  cardData: CardData;
 
   constructor(data: CardData) {
-    this.cardData = data;
-    this.questionItems = this.cardData.question.map(
+    this.questionItems = data.question.map(
       questionData => new Word(questionData.content, questionData.language, questionData.gender)
     );
+    this.answer = new Word(data.answer.content, data.answer.language, data.answer.gender);
     this.uuid = data.uuid;
   }
 
@@ -19,16 +19,12 @@ export default class Card {
     return this.questionItems.map(word => word.contentWithArticle);
   }
 
-  get questionText(): string {
-    return this.cardData.question[0].content;
-  }
-
   get answerText(): string {
-    return this.cardData.answer.content;
+    return this.answer.contentWithArticle;
   }
 
   validateAnswer(answer: string): { isValid: boolean } {
-    const validAnswer = this.cardData.answer.content;
+    const validAnswer = this.answerText;
     const isValid = validAnswer.toLocaleUpperCase() === answer.toUpperCase();
     return { isValid };
   }
