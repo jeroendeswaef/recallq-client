@@ -31,6 +31,14 @@ export default (function cardSetup() {
       const privateData = privateProps.get(this);
       return privateData ? privateData.data.question.content : '';
     }
+
+    validateAnswer(answer: string): { isValid: boolean } {
+      const privateData = privateProps.get(this);
+      if (!privateData) throw new Error('No private data found');
+      const validAnswer = privateData.data.answer.content;
+      const isValid = validAnswer.toLocaleUpperCase() === answer.toUpperCase();
+      return { isValid };
+    }
   }
   return Card;
 })();

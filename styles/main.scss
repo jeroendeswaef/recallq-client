@@ -8,19 +8,19 @@
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0; //font-family: 'Montserrat', sans-serif;
-    display: grid;
-    grid-template-rows: fit-content(0) auto;
+  margin: 0; //font-family: 'Montserrat', sans-serif;
+  display: grid;
+  grid-template-rows: fit-content(0) auto;
 }
 
 textarea,
 input {
-    outline: none;
-    border: none;
+  outline: none;
+  border: none;
 }
 
 
@@ -38,54 +38,54 @@ input {
 }*/
 
 header {
-    background-color: black;
-    display: grid;
-    grid-template-columns: [logo-start] fit-content(50%) [nav-start] auto [nav-end];
-    a {
-        text-decoration: none;
-    }
-    ul {
-        display: none;
-        list-style-type: none;
-        float: right;
-    }
-    ul li {
-        display: inline;
-    }
-    ul li a {
-        color: #fff;
-        padding: 0 15px 0 15px;
+  background-color: black;
+  display: grid;
+  grid-template-columns: [logo-start] fit-content(50%) [nav-start] auto [nav-end];
+  a {
+    text-decoration: none;
+  }
+  ul {
+    display: none;
+    list-style-type: none;
+    float: right;
+  }
+  ul li {
+    display: inline;
+  }
+  ul li a {
+    color: #fff;
+    padding: 0 15px 0 15px;
+  }
+  #logo {
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    display: block;
+  }
+  #logo::after {
+    content: 'Q';
+    position: absolute;
+    color: orange;
+    font-weight: bold;
+  }
+  @media only screen and (max-width: 500px) {
+    & {
+      grid-template-columns: [logo-start] 100%;
     }
     #logo {
-        padding: 15px;
-        text-decoration: none;
-        color: white;
-        font-size: 2rem;
-        font-family: 'Montserrat', sans-serif;
-        display: block;
+      text-align: center;
+      position: relative;
+      left: -1em;
     }
-    #logo::after {
-        content: 'Q';
-        position: absolute;
-        color: orange;
-        font-weight: bold;
-    }
-    @media only screen and (max-width: 500px) {
-        & {
-            grid-template-columns: [logo-start] 100%;
-        }
-        #logo {
-            text-align: center;
-            position: relative;
-            left: -1em;
-        }
-    }
+  }
 }
 
 .app-container {
-    display: grid;
-    justify-items: center;
-    align-items: center;
+  display: grid;
+  justify-items: center;
+  align-items: center;
 }
 
 
@@ -93,105 +93,124 @@ header {
 
 $speech-bubble-color-neutral: transparentize($color: #606c76,
 $amount: 0.7);
+$speech-bubble-color-wrong: transparentize($color: #cc0000,
+$amount: 0.8);
+$speech-bubble-color-right: transparentize($color: #008000,
+$amount: 0.8);
 .speech-bubble--system,
 .speech-bubble--user {
-    position: relative;
-    background: $speech-bubble-color-neutral;
-    border-radius: .4em;
+  position: relative;
+  background: $speech-bubble-color-neutral;
+  border-radius: .4em;
 }
 
 .speech-bubble--system:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 0;
-    height: 0;
-    border: 7px solid transparent;
-    border-right-color: $speech-bubble-color-neutral;
-    border-left: 0;
-    border-bottom: 0;
-    margin-top: -3.5px;
-    margin-left: -7px;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  border-right-color: $speech-bubble-color-neutral;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -3.5px;
+  margin-left: -7px;
 }
 
 .speech-bubble--user:after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 0;
-    height: 0;
-    border: 7px solid transparent;
-    border-left-color: $speech-bubble-color-neutral;
-    border-right: 0;
-    border-bottom: 0;
-    margin-top: -3.5px;
-    margin-right: -7px;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  border-left-color: $speech-bubble-color-neutral;
+  border-right: 0;
+  border-bottom: 0;
+  margin-top: -3.5px;
+  margin-right: -7px;
+}
+
+.speech-bubble--user {
+  &.correct {
+    background: $speech-bubble-color-right;
+    &:after {
+      border-left-color: $speech-bubble-color-right
+    }
+  }
+  &.incorrect {
+    background: $speech-bubble-color-wrong;
+    &:after {
+      border-left-color: $speech-bubble-color-wrong
+    }
+  }
 }
 
 .trainer {
-    width: 350px;
-    height: calc(100% - 10px);
-    max-height: 550px;
-    border: 1px solid #ccc;
-    margin: 5px;
-    display: grid;
-    grid-template-rows: auto fit-content(0);
-    @media only screen and (max-width: 500px) {
-        & {
-            border: none;
-            height: 100%;
-            max-height: 100%;
-            width: 100%;
-        }
+  width: 350px;
+  height: calc(100% - 10px);
+  max-height: 550px;
+  border: 1px solid #ccc;
+  margin: 5px;
+  display: grid;
+  grid-template-rows: auto fit-content(0);
+  @media only screen and (max-width: 500px) {
+    & {
+      border: none;
+      height: 100%;
+      max-height: 100%;
+      width: 100%;
     }
-    /** This is to fix a bug in chrome/chrome mobile, so it limits
+  }
+  /** This is to fix a bug in chrome/chrome mobile, so it limits
       the scrollable area when a lot of data is rendered in the conversation */
-    &__conversation-parent {
-        position: relative;
-    }
-    &__conversation {
-        overflow-y: auto;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        max-height: 100%;
-        /** end bugfix **/
-        ol {
-            padding: 10px;
-            list-style: none;
-            li {
-                display: inline-block;
-                clear: both;
-                padding: 5px 10px;
-                &.speech-bubble--system {
-                    float: left;
-                }
-                &.speech-bubble--user {
-                    float: right;
-                }
-            }
-            span {
-                margin-left: 5px;
-                margin-right: 5px;
-            }
+  &__conversation-parent {
+    position: relative;
+  }
+  &__conversation {
+    overflow-y: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100%;
+    /** end bugfix **/
+    ol {
+      padding: 10px;
+      list-style: none;
+      li {
+        display: inline-block;
+        clear: both;
+        padding: 5px 10px;
+        &.speech-bubble--system {
+          float: left;
         }
-    }
-    &__action-bar {
-        display: grid;
-        grid-template-columns: auto fit-content(20%);
-        grid-column-gap: 5px;
-        padding: 5px;
-        margin-bottom: 0;
-        background-color: #d1d1d1;
-        input {
-            background-color: white;
+        &.speech-bubble--user {
+          float: right;
         }
-        button,
-        input {
-            margin-bottom: 0;
-        }
+      }
+      span {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
     }
+  }
+  &__action-bar {
+    display: grid;
+    grid-template-columns: auto fit-content(20%);
+    grid-column-gap: 5px;
+    padding: 5px;
+    margin-bottom: 0;
+    background-color: #d1d1d1;
+    input {
+      background-color: white;
+    }
+    button,
+    input {
+      margin-bottom: 0;
+    }
+  }
 }

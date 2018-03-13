@@ -6,7 +6,6 @@ import SystemMessage from './model/SystemMessage';
 import AnswerMessage from './model/AnswerMessage';
 import Card from './model/Card';
 import MessageBase from './model/MessageBase';
-// import { ObservableArray } from 'mobx/lib/types/observablearray';
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
@@ -46,8 +45,10 @@ class TrainingStore {
   }
 
   answer(msg: string) {
-    this.messages.push(new AnswerMessage(msg));
-    this.showCorrectAnswer();
+    if (!this.currentCard) throw new Error('Trying to answer, but no current card');
+    const answer = new AnswerMessage(msg, this.currentCard);
+    this.messages.push(answer);
+    // this.showCorrectAnswer();
     this.askNextQuestion();
   }
 }

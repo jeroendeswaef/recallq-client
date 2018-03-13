@@ -1,8 +1,16 @@
+// @flow
+
 import MessageBase from './MessageBase';
+import Card from './Card';
 
 class AnswerMessage extends MessageBase {
-  constructor(text) {
+  card: Card;
+  isValid: boolean;
+
+  constructor(text: string, card: Card) {
     super(text, 'answer');
+    this.card = card;
+    this.isValid = card.validateAnswer(text).isValid;
   }
 }
 
