@@ -1,12 +1,35 @@
+// @flow
+
 import React from 'react';
 import { string, arrayOf, shape } from 'prop-types';
 import { observer } from 'mobx-react';
 import AnswerMessage from '../model/AnswerMessage';
 import SystemMessageComponent from './SystemMessage';
 import AnswerMessageComponent from './AnswerMessage';
+import QuestionMessageComponent from './QuestionMessage';
 import TrainingActionsComponent from './TrainingActionsComponent';
+import MessageBase from '../model/MessageBase';
+import QuestionMessage from '../model/QuestionMessage';
 
 @observer class TrainingComponent extends React.PureComponent {
+  static renderMessage(message: MessageBase) {
+    if (message instanceof AnswerMessage) {
+      console.info(message.uuid, message.text);
+      return (
+        <AnswerMessageComponent
+          key={message.uuid}
+          text={message.text}
+          correctedText={message.correctedText}
+          isValid={message.isValid}
+        />
+      );
+    } else if (message instanceof QuestionMessage) {
+      const questionMessage: QuestionMessage = message;
+      return <QuestionMessageComponent key={message.uuid} card={questionMessage.card} />;
+    }
+    return <SystemMessageComponent key={message.uuid} {...message} />;
+  }
+
   constructor(props) {
     super(props);
     this.answer = this.answer.bind(this);
@@ -34,12 +57,7 @@ import TrainingActionsComponent from './TrainingActionsComponent';
         <div className="trainer__conversation-parent">
           <div className="trainer__conversation">
             <ol>
-              {this.props.store.messages.map(
-                message =>
-                  message instanceof AnswerMessage
-                    ? <AnswerMessageComponent key={message.uuid} {...message} />
-                    : <SystemMessageComponent key={message.uuid} {...message} />
-              )}
+              {this.props.store.messages.map(message => this.constructor.renderMessage(message))}
             </ol>
             <div
               style={{ float: 'left', clear: 'both' }}

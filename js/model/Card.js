@@ -1,49 +1,35 @@
+import Word from './Word';
+
 // @flow
 
-type Answer = {
-  contentType: string,
-  grammarType: string,
-  language: string,
-  gender: string,
-  content: string
-};
+export default class Card {
+  questionItems: Array<Word>;
+  uuid: string;
+  cardData: CardData;
 
-type Question = {
-  language: string,
-  content: string
-};
-
-type CardData = {
-  uuid: string,
-  question: Question,
-  answer: Answer
-};
-
-export default (function cardSetup() {
-  const privateProps = new WeakMap();
-
-  class Card {
-    constructor(data: CardData) {
-      privateProps.set(this, { data });
-    }
-
-    get questionText(): string {
-      const privateData = privateProps.get(this);
-      return privateData ? privateData.data.question.content : '';
-    }
-
-    get answerText(): string {
-      const privateData = privateProps.get(this);
-      return privateData ? privateData.data.answer.content : '';
-    }
-
-    validateAnswer(answer: string): { isValid: boolean } {
-      const privateData = privateProps.get(this);
-      if (!privateData) throw new Error('No private data found');
-      const validAnswer = privateData.data.answer.content;
-      const isValid = validAnswer.toLocaleUpperCase() === answer.toUpperCase();
-      return { isValid };
-    }
+  constructor(data: CardData) {
+    this.cardData = data;
+    this.questionItems = this.cardData.question.map(
+      questionData => new Word(questionData.content, questionData.language, questionData.gender)
+    );
+    this.uuid = data.uuid;
   }
-  return Card;
-})();
+
+  get questionItemsWithArticle(): Array<string> {
+    return this.questionItems.map(word => word.contentWithArticle);
+  }
+
+  get questionText(): string {
+    return this.cardData.question[0].content;
+  }
+
+  get answerText(): string {
+    return this.cardData.answer.content;
+  }
+
+  validateAnswer(answer: string): { isValid: boolean } {
+    const validAnswer = this.cardData.answer.content;
+    const isValid = validAnswer.toLocaleUpperCase() === answer.toUpperCase();
+    return { isValid };
+  }
+}

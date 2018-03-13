@@ -4,6 +4,7 @@ import { observable, computed } from 'mobx';
 import { PropTypes } from 'mobx-react';
 import SystemMessage from './model/SystemMessage';
 import AnswerMessage from './model/AnswerMessage';
+import QuestionMessage from './model/QuestionMessage';
 import Card from './model/Card';
 import MessageBase from './model/MessageBase';
 
@@ -31,7 +32,7 @@ class TrainingStore {
 
   askNextQuestion = () => {
     this.currentCard = this.cards[getRandomArbitrary(0, this.cards.length)];
-    this.messages.push(new SystemMessage(`"${this.currentCard.questionText}"`));
+    this.messages.push(new QuestionMessage(this.currentCard));
   };
 
   showCorrectAnswer = () => {
