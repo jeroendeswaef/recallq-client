@@ -11,8 +11,6 @@
     "babel-register": "6.24.1",
     "mobx": "^3.6.2",
     "mobx-react": "^4.4.3",
-    "preact": "8.1.0",
-    "preact-compat": "3.16.0",
     "prop-types": "15.5.10",
     "react": "15.5.4",
     "react-addons-perf": "15.4.2",
