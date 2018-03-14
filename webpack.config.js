@@ -6,7 +6,8 @@ module.exports = {
   devtool: 'cheap-eval-source-map',
   output: {
     path: path.join(__dirname, 'public'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/public/'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json']
@@ -23,6 +24,19 @@ module.exports = {
   },
   module: {
     rules: [
+      /* {
+        test: /\.json$/,
+        use: ['json-loader']
+      }, */
+      /* {
+        test: /\.json/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}
+          }
+        ]
+      }, */
       {
         test: /\.jsx?$/,
         loader: 'babel-loader'

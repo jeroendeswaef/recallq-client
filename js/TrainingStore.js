@@ -7,6 +7,7 @@ import AnswerMessage from './model/AnswerMessage';
 import QuestionMessage from './model/QuestionMessage';
 import Card from './model/Card';
 import MessageBase from './model/MessageBase';
+import cardPicker from './cardPicker';
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
@@ -24,15 +25,22 @@ class TrainingStore {
   constructor(initialMessages: string[], cards: Array<Card>) {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
     this.cards = cards;
+    cardPicker.pickCards().then(newCards => {
+      console.info('store, got cards', newCards.length);
+      this.cards = newCards;
+      this.askNextQuestion();
+    });
     this.currentCard = null;
-    this.askNextQuestion();
+    // this.askNextQuestion();
     this.wrongAudio = new Audio('/public/sound/wrong.mp3');
     // autorun(() => console.log(this.report));
   }
 
   askNextQuestion = () => {
-    this.currentCard = this.cards[getRandomArbitrary(0, this.cards.length)];
-    this.messages.push(new QuestionMessage(this.currentCard));
+    if (this.cards.length > 0) {
+      this.currentCard = this.cards[getRandomArbitrary(0, this.cards.length)];
+      this.messages.push(new QuestionMessage(this.currentCard));
+    }
   };
 
   showCorrectAnswer = () => {
