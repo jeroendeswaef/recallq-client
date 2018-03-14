@@ -26,7 +26,6 @@ class TrainingStore {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
     this.cards = cards;
     cardPicker.pickCards().then(newCards => {
-      console.info('store, got cards', newCards.length);
       this.cards = newCards;
       this.askNextQuestion();
     });

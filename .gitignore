@@ -7,6 +7,8 @@ coverage/
 public/*bundle*
 public/main*.css
 public/index.html
+public/main*.js
+public/dynamic*.js
 *.map
 *.bundle.js
 _site/
