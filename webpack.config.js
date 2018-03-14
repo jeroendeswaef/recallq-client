@@ -14,7 +14,7 @@ module.exports = {
   devtool: 'cheap-eval-source-map',
   output: {
     path: path.join(__dirname, 'public'),
-    filename: 'bundle.js'
+    filename: '[name].[chunkhash].js'
     /* publicPath: '/public/' */
   },
   resolve: {
