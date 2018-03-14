@@ -2,6 +2,7 @@ const path = require('path');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
   filename: '[name].[contenthash].css',
@@ -11,7 +12,8 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   context: __dirname,
   entry: './js/ClientApp.jsx',
-  devtool: 'cheap-eval-source-map',
+  // messes up uglify on production build
+  // devtool: 'cheap-eval-source-map',
   output: {
     path: path.join(__dirname, 'public'),
     filename: '[name].[chunkhash].js',
@@ -62,6 +64,7 @@ module.exports = {
     extractSass,
     new HtmlWebpackPlugin({
       template: 'template.html'
-    })
+    }),
+    new UglifyJSPlugin()
   ]
 };
