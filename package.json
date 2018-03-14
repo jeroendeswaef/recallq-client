@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "webpack",
-    "production-build": "webpack -p",
+    "production-build": "NODE_ENV='production' webpack -p",
     "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 \"js/**/*.{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
     "watch": "webpack --watch",
@@ -48,8 +48,10 @@
     "eslint-plugin-jsx-a11y": "5.0.3",
     "eslint-plugin-prettier": "2.1.1",
     "eslint-plugin-react": "7.0.1",
+    "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^1.1.11",
     "flow-bin": "0.47.0",
+    "html-webpack-plugin": "^3.0.6",
     "jest": "20.0.4",
     "jest-serializer-enzyme": "1.0.0",
     "moxios": "0.4.0",

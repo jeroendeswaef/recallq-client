@@ -5,6 +5,8 @@ coverage/
 .nyc_output
 .DS_Store
 public/*bundle*
+public/main*.css
+public/index.html
 *.map
 *.bundle.js
 _site/
