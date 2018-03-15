@@ -21,16 +21,21 @@ class TrainingActionsComponent extends React.PureComponent {
 
   render() {
     return (
-      <form onSubmit={this.handleAnswer} className="trainer__action-bar">
-        <input
-          value={this.state.enteredAnswer}
-          onChange={this.changeEnteredAnswer}
-          type="text"
-          placeholder="your answer"
-          ref={input => input && input.focus()}
-        />
-        <button type="submit" className="button">Answer</button>
-      </form>
+      <div>
+        {['é', 'è', 'ï', 'î', 'â', 'û', 'ç', 'ô', 'ê', 'à']
+          .sort()
+          .map(character => <button className="button button-outline">{character}</button>)}
+        <form onSubmit={this.handleAnswer} className="trainer__action-bar">
+          <input
+            value={this.state.enteredAnswer}
+            onChange={this.changeEnteredAnswer}
+            type="text"
+            placeholder="your answer"
+            ref={input => input && input.focus()}
+          />
+          <button type="submit" className="button">Answer</button>
+        </form>
+      </div>
     );
   }
 }

@@ -1,6 +1,7 @@
 // @flow
 import uuid from 'uuid/v4';
 
+const specialCharactersRegExp = new RegExp(/[^\x00-\x7F]/g);
 export default class Word {
   uuid: string;
   content: string;
@@ -33,5 +34,17 @@ export default class Word {
       return `${article}${isSpaceBetween ? ' ' : ''}${this.content}`;
     }
     throw new Error('Language not supported');
+  }
+
+  get specialCharacters(): Set<string> {
+    const result: Set<string> = new Set();
+    // eslint-disable-next-line no-unused-vars
+    let regExpResult;
+    // eslint-disable-next-line no-cond-assign
+    while ((regExpResult = specialCharactersRegExp.exec(this.content)) !== null) {
+      const specialCharacter: string = regExpResult[0];
+      result.add(specialCharacter);
+    }
+    return result;
   }
 }
