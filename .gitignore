@@ -4,7 +4,6 @@ node_modules/
 coverage/
 .nyc_output
 .DS_Store
-public/*bundle*
 public/main*.css
 public/index.html
 public/main*.js

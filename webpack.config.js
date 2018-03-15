@@ -9,6 +9,17 @@ const extractSass = new ExtractTextPlugin({
   disable: process.env.NODE_ENV !== 'production'
 });
 
+const plugins = [
+  extractSass,
+  new HtmlWebpackPlugin({
+    template: 'template.html'
+  })
+];
+
+if (process.env.NODE_ENV === 'production') {
+  plugins.push(new UglifyJSPlugin());
+}
+
 module.exports = {
   context: __dirname,
   entry: './js/ClientApp.jsx',
@@ -60,11 +71,5 @@ module.exports = {
       } */
     ]
   },
-  plugins: [
-    extractSass,
-    new HtmlWebpackPlugin({
-      template: 'template.html'
-    }),
-    new UglifyJSPlugin()
-  ]
+  plugins
 };
