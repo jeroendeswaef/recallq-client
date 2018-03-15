@@ -1,6 +1,7 @@
 // @flow
 
 import { observable, computed, toJS } from 'mobx';
+import MicroEvent from 'microevent';
 import { PropTypes } from 'mobx-react';
 import SystemMessage from './model/SystemMessage';
 import AnswerMessage from './model/AnswerMessage';
@@ -16,19 +17,16 @@ class TrainingStore {
   upcomingSpecialCharacters = observable.array([]);
   cards: Array<Card>;
   currentCard: ?Card;
-  wrongAudio: Audio;
 
   constructor(initialMessages: string[], cards: Array<Card>) {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
     this.cards = cards;
     cardPicker.pickCards().then(newCards => {
       this.cards = newCards;
+      window.cards = newCards;
       this.askNextQuestion();
     });
     this.currentCard = null;
-    // this.askNextQuestion();
-    this.wrongAudio = new Audio('/public/sound/wrong.mp3');
-    // autorun(() => console.log(this.report));
   }
 
   askNextQuestion = () => {
@@ -56,23 +54,15 @@ class TrainingStore {
     }
   };
 
-  showCorrectAnswer = () => {
-    this.wrongAudio.play();
-    // this.messages.push(new SystemMessage(this.currentCard.answer.content));
-  };
-
-  @computed get report(): string {
-    if (this.messages.length === 0) return '<none>';
-    return `${this.messages.length} messages`;
-  }
-
   answer(msg: string) {
     if (!this.currentCard) throw new Error('Trying to answer, but no current card');
     const answer = new AnswerMessage(msg, this.currentCard);
+    this.trigger('answered', answer.card, answer.isValid);
     this.messages.push(answer);
-    // this.showCorrectAnswer();
     this.askNextQuestion();
   }
 }
+
+MicroEvent.mixin(TrainingStore);
 
 export default TrainingStore;

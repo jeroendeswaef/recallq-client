@@ -3,16 +3,17 @@ import { render } from 'react-dom';
 
 import '../styles/main.scss';
 
-// import preload from '../cards.json';
-
+import SoundManager from './SoundManager';
 import TrainingComponent from './components/Training';
 import TrainingStore from './TrainingStore';
-// import Card from './model/Card';
 
-const preload = [];
 const initialMessages = ["Let's learn some french! 🇫🇷", 'Try to guess the French word for...'];
-// const cards = preload.map(cardData => new Card(cardData));
 
+const soundManager = new SoundManager();
 const trainingStore = new TrainingStore(initialMessages, []);
+
+trainingStore.bind('answered', (card, isCorrect) => {
+  soundManager.onCardAnswered(card, isCorrect);
+});
 
 render(<TrainingComponent store={trainingStore} />, document.getElementById('app'));
