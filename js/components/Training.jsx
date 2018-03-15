@@ -17,6 +17,7 @@ import QuestionMessage from '../model/QuestionMessage';
       return (
         <AnswerMessageComponent
           key={message.uuid}
+          cardUuid={message.card.uuid}
           text={message.text}
           correctedText={message.correctedText}
           isValid={message.isValid}

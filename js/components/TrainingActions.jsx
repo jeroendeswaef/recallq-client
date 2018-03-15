@@ -35,7 +35,7 @@ interface TrainingActionsProps {
     return (
       <div className="trainer__action-bar">
         <div className="trainer__action-bar__characters">
-          {this.props.upcomingSpecialCharacters.sort().map(character => (
+          {this.props.upcomingSpecialCharacters.map(character => (
             <button
               key={character}
               onClick={this.handleSpecialCharacter}

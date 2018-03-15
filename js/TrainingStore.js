@@ -1,6 +1,6 @@
 // @flow
 
-import { observable, computed } from 'mobx';
+import { observable, computed, toJS } from 'mobx';
 import { PropTypes } from 'mobx-react';
 import SystemMessage from './model/SystemMessage';
 import AnswerMessage from './model/AnswerMessage';
@@ -9,16 +9,11 @@ import Card from './model/Card';
 import MessageBase from './model/MessageBase';
 import cardPicker from './cardPicker';
 
-/**
- * Returns a random number between min (inclusive) and max (exclusive)
- */
-function getRandomArbitrary(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
+const specialCharactersLength = 7;
 
 class TrainingStore {
   @observable messages: PropTypes.observable<MessageBase>;
-  upcomingSpecialCharacters = observable.array(['é', 'è', 'ï', 'î', 'â', 'û', 'ç', 'ô', 'ê', 'à'].slice(0, 7));
+  upcomingSpecialCharacters = observable.array([]);
   cards: Array<Card>;
   currentCard: ?Card;
   wrongAudio: Audio;
@@ -38,11 +33,26 @@ class TrainingStore {
 
   askNextQuestion = () => {
     if (this.cards.length > 0) {
-      this.currentCard = this.cards[getRandomArbitrary(0, this.cards.length)];
+      this.currentCard = this.cards.shift();
       this.messages.push(new QuestionMessage(this.currentCard));
-      /* this.upcomingSpecialCharacters.replace(
-        this.currentCard ? Array.from(this.currentCard.answer.specialCharacters) : []
-      ); */
+      const requiredSpecialCharactersSet = this.currentCard ? this.currentCard.answer.specialCharacters : new Set();
+      if (
+        this.upcomingSpecialCharacters.length < specialCharactersLength ||
+        !Array.from(requiredSpecialCharactersSet).every(
+          upcomingSpecialCharacter => toJS(this.upcomingSpecialCharacters).indexOf(upcomingSpecialCharacter) > -1
+        )
+      ) {
+        cardPicker.getSpecialCharactersForAllCards().then(specialCharactersForAllCardsSet => {
+          const specialCharactersForAllCards = Array.from(specialCharactersForAllCardsSet);
+          let i = 0;
+          const newSpecialCharactersSet = requiredSpecialCharactersSet;
+          while (newSpecialCharactersSet.size < specialCharactersLength) {
+            newSpecialCharactersSet.add(specialCharactersForAllCards[i]);
+            i += 1;
+          }
+          this.upcomingSpecialCharacters.replace(Array.from(newSpecialCharactersSet).sort());
+        });
+      }
     }
   };
 
