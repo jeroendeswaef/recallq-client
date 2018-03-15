@@ -68,7 +68,10 @@ import QuestionMessage from '../model/QuestionMessage';
             />
           </div>
         </div>
-        <TrainingActionsComponent answer={this.answer} />
+        <TrainingActionsComponent
+          answer={this.answer}
+          upcomingSpecialCharacters={this.props.store.upcomingSpecialCharacters}
+        />
       </div>
     );
   }

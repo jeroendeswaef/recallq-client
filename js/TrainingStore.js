@@ -18,6 +18,7 @@ function getRandomArbitrary(min, max) {
 
 class TrainingStore {
   @observable messages: PropTypes.observable<MessageBase>;
+  upcomingSpecialCharacters = observable.array(['é', 'è', 'ï', 'î', 'â', 'û', 'ç', 'ô', 'ê', 'à'].slice(0, 5));
   cards: Array<Card>;
   currentCard: ?Card;
   wrongAudio: Audio;
@@ -39,6 +40,9 @@ class TrainingStore {
     if (this.cards.length > 0) {
       this.currentCard = this.cards[getRandomArbitrary(0, this.cards.length)];
       this.messages.push(new QuestionMessage(this.currentCard));
+      /* this.upcomingSpecialCharacters.replace(
+        this.currentCard ? Array.from(this.currentCard.answer.specialCharacters) : []
+      ); */
     }
   };
 
