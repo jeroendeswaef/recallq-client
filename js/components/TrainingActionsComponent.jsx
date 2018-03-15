@@ -5,21 +5,19 @@ class TrainingActionsComponent extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      enteredAnswer: '',
       answer: props.answer
     };
   }
   handleAnswer = event => {
     // To prevent the submit from submitting the page
     event.preventDefault();
-    this.state.answer(this.state.enteredAnswer);
-    this.setState({ enteredAnswer: '' });
-  };
-  changeEnteredAnswer = event => {
-    this.setState({ enteredAnswer: event.currentTarget.value });
+    this.state.answer(this.input.value);
+    this.input.value = '';
+    this.input.focus();
   };
 
   render() {
+    console.info('TAC rerender');
     return (
       <div>
         {['é', 'è', 'ï', 'î', 'â', 'û', 'ç', 'ô', 'ê', 'à']
@@ -27,11 +25,11 @@ class TrainingActionsComponent extends React.PureComponent {
           .map(character => <button className="button button-outline">{character}</button>)}
         <form onSubmit={this.handleAnswer} className="trainer__action-bar">
           <input
-            value={this.state.enteredAnswer}
-            onChange={this.changeEnteredAnswer}
             type="text"
             placeholder="your answer"
-            ref={input => input && input.focus()}
+            ref={input => {
+              this.input = input;
+            }}
           />
           <button type="submit" className="button">Answer</button>
         </form>
