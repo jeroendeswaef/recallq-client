@@ -18,7 +18,7 @@ function getRandomArbitrary(min, max) {
 
 class TrainingStore {
   @observable messages: PropTypes.observable<MessageBase>;
-  upcomingSpecialCharacters = observable.array(['é', 'è', 'ï', 'î', 'â', 'û', 'ç', 'ô', 'ê', 'à'].slice(0, 5));
+  upcomingSpecialCharacters = observable.array(['é', 'è', 'ï', 'î', 'â', 'û', 'ç', 'ô', 'ê', 'à'].slice(0, 7));
   cards: Array<Card>;
   currentCard: ?Card;
   wrongAudio: Audio;

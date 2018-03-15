@@ -7,7 +7,7 @@ import AnswerMessage from '../model/AnswerMessage';
 import SystemMessageComponent from './SystemMessage';
 import AnswerMessageComponent from './AnswerMessage';
 import QuestionMessageComponent from './QuestionMessage';
-import TrainingActionsComponent from './TrainingActionsComponent';
+import TrainingActionsComponent from './TrainingActions';
 import MessageBase from '../model/MessageBase';
 import QuestionMessage from '../model/QuestionMessage';
 
