@@ -9,29 +9,35 @@ import QuestionMessage from './model/QuestionMessage';
 import Card from './model/Card';
 import MessageBase from './model/MessageBase';
 import cardPicker from './cardPicker';
+import RecallQueue from './model/RecallQueue';
 
+// How many special character buttons to show
 const specialCharactersLength = 7;
 
 class TrainingStore {
   @observable messages: PropTypes.observable<MessageBase>;
   upcomingSpecialCharacters = observable.array([]);
-  cards: Array<Card>;
   currentCard: ?Card;
+  upcomingCards: Array<Card> = [];
+  recallQueue: RecallQueue;
 
-  constructor(initialMessages: string[], cards: Array<Card>) {
+  constructor(initialMessages: string[]) {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
-    this.cards = cards;
-    cardPicker.pickCards().then(newCards => {
-      this.cards = newCards;
-      window.cards = newCards;
+    cardPicker.pickCards().then(cards => {
+      this.recallQueue = new RecallQueue(cards);
+      this.upcomingCards = this.recallQueue.getNextCards();
       this.askNextQuestion();
     });
     this.currentCard = null;
   }
 
   askNextQuestion = () => {
-    if (this.cards.length > 0) {
-      this.currentCard = this.cards.shift();
+    // Keeping a small buffer of minimum 2 cards at all time to be able to do prefetching
+    if (this.upcomingCards.length < 3) {
+      this.upcomingCards = [...this.upcomingCards, ...this.recallQueue.getNextCards()];
+    }
+    if (this.upcomingCards.length > 0) {
+      this.currentCard = this.upcomingCards.shift();
       this.messages.push(new QuestionMessage(this.currentCard));
       const requiredSpecialCharactersSet = this.currentCard ? this.currentCard.answer.specialCharacters : new Set();
       if (
@@ -54,10 +60,14 @@ class TrainingStore {
     }
   };
 
+  // implemented by the microevent library.
+  // eslint-disable-next-line class-methods-use-this,no-unused-vars
+  trigger(type: string, answer: AnswerMessage) {}
+
   answer(msg: string) {
     if (!this.currentCard) throw new Error('Trying to answer, but no current card');
     const answer = new AnswerMessage(msg, this.currentCard);
-    this.trigger('answered', answer.card, answer.isValid);
+    this.trigger('answered', answer);
     this.messages.push(answer);
     this.askNextQuestion();
   }

@@ -10,7 +10,7 @@ import TrainingStore from './TrainingStore';
 const initialMessages = ["Let's learn some french! 🇫🇷", 'Try to guess the French word for...'];
 
 const soundManager = new SoundManager();
-const trainingStore = new TrainingStore(initialMessages, []);
+const trainingStore = new TrainingStore(initialMessages);
 
 trainingStore.bind('answered', (card, isCorrect) => {
   soundManager.onCardAnswered(card, isCorrect);
