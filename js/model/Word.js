@@ -7,11 +7,13 @@ export default class Word {
   content: string;
   language: string;
   gender: ?string;
+  frequencyScore: ?number;
 
-  constructor(content: string, language: string, gender: ?string) {
+  constructor(content: string, language: string, gender: ?string, frequencyScore: ?number) {
     this.content = content;
     this.language = language;
     this.gender = gender;
+    this.frequencyScore = frequencyScore;
     this.uuid = uuid();
   }
 

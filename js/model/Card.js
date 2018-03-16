@@ -11,7 +11,7 @@ export default class Card {
     this.questionItems = data.question.map(
       questionData => new Word(questionData.content, questionData.language, questionData.gender)
     );
-    this.answer = new Word(data.answer.content, data.answer.language, data.answer.gender);
+    this.answer = new Word(data.answer.content, data.answer.language, data.answer.gender, data.answer.freq);
     this.uuid = data.uuid;
   }
 

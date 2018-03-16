@@ -44,7 +44,7 @@ class TrainingStore {
           const specialCharactersForAllCards = Array.from(specialCharactersForAllCardsSet);
           let i = 0;
           const newSpecialCharactersSet = requiredSpecialCharactersSet;
-          while (newSpecialCharactersSet.size < specialCharactersLength) {
+          while (newSpecialCharactersSet.size < specialCharactersLength && i < specialCharactersForAllCards.length) {
             newSpecialCharactersSet.add(specialCharactersForAllCards[i]);
             i += 1;
           }

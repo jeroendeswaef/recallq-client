@@ -11,7 +11,8 @@ export type Answer = {
   grammarType: string,
   language: string,
   gender: string,
-  content: string
+  content: string,
+  freq: ?number
 };
 
 export type Question = {

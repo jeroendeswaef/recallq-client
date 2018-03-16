@@ -27,7 +27,10 @@ class CardPicker {
       import('../cards.json')
         .then(cardData => {
           try {
-            this.cards = shuffle(cardData.map(cardRaw => new Card(cardRaw)));
+            this.cards /* shuffle( */ = cardData
+              .map(cardRaw => new Card(cardRaw))
+              .filter((card: Card) => card.answer.frequencyScore && card.answer.frequencyScore < 300);
+            // );
             this.specialCharacters = this.cards.reduce((acc: Set<string>, card: Card): Set<string> => {
               const specialCharactersForCard = Array.from(card.answer.specialCharacters);
               for (let i = 0; i < specialCharactersForCard.length; i += 1) {
