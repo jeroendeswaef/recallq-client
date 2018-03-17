@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   context: __dirname,
-  entry: './js/ClientApp.jsx',
+  entry: ['babel-polyfill', './js/ClientApp.jsx'],
   // messes up uglify on production build
   // devtool: 'cheap-eval-source-map',
   output: {

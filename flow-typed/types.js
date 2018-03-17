@@ -40,8 +40,8 @@ declare type PositionFilter = {
 interface ProgressDAO {
   getCurrentPos(): number,
   increaseCurrentPos(): void,
-  setProgress(cardUuid: string, progress: ProgressForCard): void,
-  getProgress(cardUuid: string): ?ProgressForCard,
-  findCardsWithAnsweredPositionBefore(pos: number, Array<PositionFilter>): Array<string>,
-  getLearnedCards(): Array<string>
+  setProgress(cardUuid: string, progress: ProgressForCard): Promise<void>,
+  getProgress(cardUuid: string): Promise<?ProgressForCard>,
+  findCardsWithAnsweredPositionBefore(pos: number, Array<PositionFilter>): Promise<Array<string>>,
+  getLearnedCards(): Promise<Array<string>>
 }

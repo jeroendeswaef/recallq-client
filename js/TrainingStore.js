@@ -10,7 +10,7 @@ import Card from './model/Card';
 import MessageBase from './model/MessageBase';
 import cardPicker from './cardPicker';
 import RecallQueue from './model/RecallQueue';
-import LocalProgressDAO from './dao/LocalProgressDAO';
+import DexieProgressDAO from './dao/DexieProgressDAO';
 
 // How many special character buttons to show
 const specialCharactersLength = 7;
@@ -24,20 +24,20 @@ class TrainingStore {
 
   constructor(initialMessages: string[]) {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
-    cardPicker.pickCards().then(cards => {
-      this.recallQueue = new RecallQueue(cards, new LocalProgressDAO());
-      this.upcomingCards = this.recallQueue.getNextCards();
-      this.askNextQuestion();
+    cardPicker.pickCards().then(async cards => {
+      this.recallQueue = new RecallQueue(cards, new DexieProgressDAO());
+      this.upcomingCards = await this.recallQueue.getNextCards();
+      await this.askNextQuestion();
     });
     this.currentCard = null;
   }
 
-  askNextQuestion = () => {
+  askNextQuestion = async () => {
     // Keeping a small buffer of minimum 2 cards at all time to be able to do prefetching
     if (this.upcomingCards.length < 3) {
       this.upcomingCards = [
         ...this.upcomingCards,
-        ...this.recallQueue.getNextCards(this.upcomingCards.map(card => card.uuid))
+        ...(await this.recallQueue.getNextCards(this.upcomingCards.map(card => card.uuid)))
       ];
     }
     if (this.upcomingCards.length > 0) {
@@ -68,13 +68,13 @@ class TrainingStore {
   // eslint-disable-next-line class-methods-use-this,no-unused-vars
   trigger(type: string, answer: AnswerMessage) {}
 
-  answer(msg: string) {
+  async answer(msg: string) {
     if (!this.currentCard) throw new Error('Trying to answer, but no current card');
     const answer = new AnswerMessage(msg, this.currentCard);
     this.trigger('answered', answer);
-    this.recallQueue.onCardAnswered(answer);
+    await this.recallQueue.onCardAnswered(answer);
     this.messages.push(answer);
-    this.askNextQuestion();
+    await this.askNextQuestion();
   }
 }
 

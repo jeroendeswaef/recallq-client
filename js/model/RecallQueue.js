@@ -40,37 +40,39 @@ class RecallQueue {
     this.progressDAO = progressDAO;
   }
 
-  onCardAnswered(answer: AnswerMessage) {
+  async onCardAnswered(answer: AnswerMessage) {
     const cardUuid = answer.card.uuid;
     const isCorrect = answer.isValid;
     // Update progressByCard
-    const progressForCard = this.progressDAO.getProgress(cardUuid);
+    const progressForCard = await this.progressDAO.getProgress(cardUuid);
     const correctStrikeForCard: number = progressForCard ? progressForCard.correctStrike : 0;
     const updatedProgressForCard: ProgressForCard = {
       lastAnsweredPos: this.progressDAO.getCurrentPos(),
       correctStrike: isCorrect ? correctStrikeForCard + 1 : 0
     };
-    this.progressDAO.setProgress(cardUuid, updatedProgressForCard);
+    await this.progressDAO.setProgress(cardUuid, updatedProgressForCard);
     this.progressDAO.increaseCurrentPos();
   }
 
   /** 
    * Finds all cards that are egible to learn at the position in the virtual queue. 
    */
-  getCardsDue(pos: number): Array<Card> {
-    return this.progressDAO
-      .findCardsWithAnsweredPositionBefore(pos, this.positionFilters)
-      .map(cardUuid => this.cardsByUuid.get(cardUuid));
+  async getCardsDue(pos: number): Promise<Array<Card>> {
+    const cardUuids: Array<string> = await this.progressDAO.findCardsWithAnsweredPositionBefore(
+      pos,
+      this.positionFilters
+    );
+    return cardUuids.map(cardUuid => this.cardsByUuid.get(cardUuid));
   }
 
-  getNextCards(cardUuidsInThePipeline?: Array<String> = []): Array<Card> {
+  async getNextCards(cardUuidsInThePipeline?: Array<String> = []): Promise<Array<Card>> {
     // First, get the cards that are due for revision in this batch...
-    const nextCards: Array<Card> = this.getCardsDue(this.progressDAO.getCurrentPos() + this.batchSize).filter(
+    const nextCards: Array<Card> = (await this.getCardsDue(this.progressDAO.getCurrentPos() + this.batchSize)).filter(
       card => cardUuidsInThePipeline.indexOf(card.uuid) < 0
     );
     // Then, fill up the rest with new cards
     let noMoreSuitableCardsFound = false;
-    const learnedCards = this.progressDAO.getLearnedCards();
+    const learnedCards = await this.progressDAO.getLearnedCards();
     while (nextCards.length < this.batchSize && !noMoreSuitableCardsFound) {
       // Not using ES5 find because we want to provide a start index
       const unseenCardIndex = findIndex(this.cards, card => !learnedCards.includes(card.uuid), this.cardsPos);

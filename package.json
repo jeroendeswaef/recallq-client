@@ -9,8 +9,10 @@
     "dev": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "babel-register": "6.24.1",
     "base64url": "^2.0.0",
+    "dexie": "^2.0.2",
     "lodash.findindex": "^4.6.0",
     "microevent": "^1.0.0",
     "mobx": "^3.6.2",
