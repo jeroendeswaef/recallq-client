@@ -25,3 +25,23 @@ export type CardData = {
   question: Question[],
   answer: Answer
 };
+
+declare type ProgressForCard = {
+  // The position in the virtual queue on which a card was last answered
+  lastAnsweredPos: number,
+  correctStrike: number
+};
+
+declare type PositionFilter = {
+  posOffset: number,
+  correctStrike: number
+};
+
+interface ProgressDAO {
+  getCurrentPos(): number,
+  increaseCurrentPos(): void,
+  setProgress(cardUuid: string, progress: ProgressForCard): void,
+  getProgress(cardUuid: string): ?ProgressForCard,
+  findCardsWithAnsweredPositionBefore(pos: number, Array<PositionFilter>): Array<string>,
+  getLearnedCards(): Array<string>
+}

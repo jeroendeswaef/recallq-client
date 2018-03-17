@@ -1,6 +1,6 @@
 // @flow
 
-import { observable, computed, toJS } from 'mobx';
+import { observable, toJS } from 'mobx';
 import MicroEvent from 'microevent';
 import { PropTypes } from 'mobx-react';
 import SystemMessage from './model/SystemMessage';
@@ -10,6 +10,7 @@ import Card from './model/Card';
 import MessageBase from './model/MessageBase';
 import cardPicker from './cardPicker';
 import RecallQueue from './model/RecallQueue';
+import LocalProgressDAO from './dao/LocalProgressDAO';
 
 // How many special character buttons to show
 const specialCharactersLength = 7;
@@ -24,7 +25,7 @@ class TrainingStore {
   constructor(initialMessages: string[]) {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
     cardPicker.pickCards().then(cards => {
-      this.recallQueue = new RecallQueue(cards);
+      this.recallQueue = new RecallQueue(cards, new LocalProgressDAO());
       this.upcomingCards = this.recallQueue.getNextCards();
       this.askNextQuestion();
     });
