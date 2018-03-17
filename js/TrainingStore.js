@@ -34,7 +34,10 @@ class TrainingStore {
   askNextQuestion = () => {
     // Keeping a small buffer of minimum 2 cards at all time to be able to do prefetching
     if (this.upcomingCards.length < 3) {
-      this.upcomingCards = [...this.upcomingCards, ...this.recallQueue.getNextCards()];
+      this.upcomingCards = [
+        ...this.upcomingCards,
+        ...this.recallQueue.getNextCards(this.upcomingCards.map(card => card.uuid))
+      ];
     }
     if (this.upcomingCards.length > 0) {
       this.currentCard = this.upcomingCards.shift();
@@ -68,6 +71,7 @@ class TrainingStore {
     if (!this.currentCard) throw new Error('Trying to answer, but no current card');
     const answer = new AnswerMessage(msg, this.currentCard);
     this.trigger('answered', answer);
+    this.recallQueue.onCardAnswered(answer);
     this.messages.push(answer);
     this.askNextQuestion();
   }
