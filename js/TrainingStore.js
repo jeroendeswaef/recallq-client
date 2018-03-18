@@ -11,6 +11,8 @@ import MessageBase from './model/MessageBase';
 import cardPicker from './cardPicker';
 import RecallQueue from './model/RecallQueue';
 import DexieProgressDAO from './dao/DexieProgressDAO';
+import LocalProgressDAO from './dao/LocalProgressDAO';
+import PouchDbProgressDAO from './dao/PouchDbProgressDAO';
 
 // How many special character buttons to show
 const specialCharactersLength = 7;
@@ -25,7 +27,7 @@ class TrainingStore {
   constructor(initialMessages: string[]) {
     this.messages = observable.array((initialMessages || []).map(msg => new SystemMessage(msg)));
     cardPicker.pickCards().then(async cards => {
-      this.recallQueue = new RecallQueue(cards, new DexieProgressDAO());
+      this.recallQueue = new RecallQueue(cards, new PouchDbProgressDAO());
       this.upcomingCards = await this.recallQueue.getNextCards();
       await this.askNextQuestion();
     });

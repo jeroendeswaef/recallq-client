@@ -20,11 +20,11 @@ if (process.env.NODE_ENV === 'production') {
   plugins.push(new UglifyJSPlugin());
 }
 
-module.exports = {
+const config = {
   context: __dirname,
   entry: ['babel-polyfill', './js/ClientApp.jsx'],
   // messes up uglify on production build
-  // devtool: 'cheap-eval-source-map',
+  devtool: 'cheap-eval-source-map',
   output: {
     path: path.join(__dirname, 'public'),
     filename: '[name].[chunkhash].js',
@@ -73,3 +73,9 @@ module.exports = {
   },
   plugins
 };
+
+if (process.env.NODE_ENV === 'production') {
+  config.devtool = false;
+}
+
+module.exports = config;

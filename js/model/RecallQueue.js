@@ -47,7 +47,7 @@ class RecallQueue {
     const progressForCard = await this.progressDAO.getProgress(cardUuid);
     const correctStrikeForCard: number = progressForCard ? progressForCard.correctStrike : 0;
     const updatedProgressForCard: ProgressForCard = {
-      lastAnsweredPos: this.progressDAO.getCurrentPos(),
+      lastAnsweredPos: await this.progressDAO.getCurrentPos(),
       correctStrike: isCorrect ? correctStrikeForCard + 1 : 0
     };
     await this.progressDAO.setProgress(cardUuid, updatedProgressForCard);
@@ -67,9 +67,9 @@ class RecallQueue {
 
   async getNextCards(cardUuidsInThePipeline?: Array<String> = []): Promise<Array<Card>> {
     // First, get the cards that are due for revision in this batch...
-    const nextCards: Array<Card> = (await this.getCardsDue(this.progressDAO.getCurrentPos() + this.batchSize)).filter(
-      card => cardUuidsInThePipeline.indexOf(card.uuid) < 0
-    );
+    const nextCards: Array<Card> = (await this.getCardsDue(
+      (await this.progressDAO.getCurrentPos()) + this.batchSize
+    )).filter(card => cardUuidsInThePipeline.indexOf(card.uuid) < 0);
     // Then, fill up the rest with new cards
     let noMoreSuitableCardsFound = false;
     const learnedCards = await this.progressDAO.getLearnedCards();
