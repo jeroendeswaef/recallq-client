@@ -4,21 +4,23 @@
 import PouchDB from 'pouchdb';
 import PouchdbFind from 'pouchdb-find';
 
+PouchDB.plugin(PouchdbFind);
 export default class PouchDbProgressDAO {
   db: PouchDB;
   revsByCardUuid: Map<string, string> = new Map();
   currentPosRev: ?string;
   currentPos: ?number;
+  isInitialized: boolean = false;
 
-  constructor() {
-    PouchDB.plugin(PouchdbFind);
+  async initialize() {
+    if (this.isInitialized) return Promise.resolve();
     this.db = new PouchDB('recallQDb');
-    this.db.createIndex({
+    await this.db.createIndex({
       index: {
         fields: ['lastAnsweredPos', 'correctStrike']
       }
     });
-    this.db
+    await this.db
       .get('currentPos')
       .then(queryRes => {
         if (!isNaN(queryRes.value)) {
@@ -35,9 +37,11 @@ export default class PouchDbProgressDAO {
           console.error(ex);
         }
       });
+    this.isInitialized = true;
   }
 
   async setProgress(cardUuid: string, progress: ProgressForCard): Promise<void> {
+    await this.initialize();
     const res = await this.db.put(
       Object.assign(
         {
@@ -53,6 +57,7 @@ export default class PouchDbProgressDAO {
   }
 
   async getProgress(cardUuid: string): Promise<?ProgressForCard> {
+    await this.initialize();
     const res = await this.db.get(cardUuid).then(queryRes => Promise.resolve(queryRes)).catch(ex => {
       if (ex.status === 404) {
         return Promise.resolve(null);
@@ -69,6 +74,7 @@ export default class PouchDbProgressDAO {
     pos: number,
     positionFilters: Array<PositionFilter>
   ): Promise<Array<string>> {
+    await this.initialize();
     const cardUuids = Array.from(
       await positionFilters.reduce(async (acc: Set<string>, positionFilter) => {
         const res = await this.db.find({
@@ -89,15 +95,18 @@ export default class PouchDbProgressDAO {
     return cardUuids;
   }
   async getLearnedCards(): Promise<Array<string>> {
+    await this.initialize();
     // Alldocs we can't use, because it also returns indexes
     const res = (await this.db.find({ selector: {}, fields: ['_id'] })).docs.map(item => item._id);
     return res;
   }
   async getCurrentPos(): Promise<number> {
+    await this.initialize();
     return Promise.resolve(this.currentPos);
   }
 
   async increaseCurrentPos(): Promise<void> {
+    await this.initialize();
     this.currentPos += 1;
     const res = await this.db.put({
       _id: 'currentPos',
