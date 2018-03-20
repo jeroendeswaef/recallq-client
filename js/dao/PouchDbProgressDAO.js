@@ -1,17 +1,18 @@
 // @flow
 /* eslint-disable no-underscore-dangle */
 
-import PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb-browser';
 import PouchdbFind from 'pouchdb-find';
 
-PouchDB.plugin(PouchdbFind);
 export default class PouchDbProgressDAO {
   db: PouchDB;
   revsByCardUuid: Map<string, string> = new Map();
   currentPosRev: ?string;
   currentPos: ?number;
   isInitialized: boolean = false;
-
+  constructor() {
+    PouchDB.plugin(PouchdbFind);
+  }
   async initialize() {
     if (this.isInitialized) return Promise.resolve();
     this.db = new PouchDB('recallQDb');

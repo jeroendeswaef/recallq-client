@@ -17,7 +17,13 @@ const plugins = [
 ];
 
 if (process.env.NODE_ENV === 'production') {
-  plugins.push(new UglifyJSPlugin());
+  plugins.push(
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        keep_fnames: true
+      }
+    })
+  );
 }
 
 const config = {

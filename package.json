@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "build": "webpack",
-    "production-build": "rimraf public/main*.js && rimraf public/dynamic*.js && rimraf public/main*.css && NODE_ENV='production' webpack -p",
+    "build": "rimraf public/main*.js && rimraf public/dynamic*.js && rimraf public/main*.css && NODE_ENV='production' webpack -p",
+    "build:dev": "webpack",
     "format": "prettier --write --single-quote --print-width=120 --parser=flow --tab-width=2 \"js/**/*.{js,jsx}\"",
     "lint": "eslint **/*.{js,jsx} --quiet",
     "watch": "webpack --watch",
@@ -17,7 +17,7 @@
     "microevent": "^1.0.0",
     "mobx": "^3.6.2",
     "mobx-react": "^4.4.3",
-    "pouchdb": "^6.4.3",
+    "pouchdb-browser": "^6.4.3",
     "pouchdb-find": "^6.4.3",
     "prop-types": "15.5.10",
     "react": "15.5.4",
